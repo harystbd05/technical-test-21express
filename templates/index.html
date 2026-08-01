@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shipment Manifest — Resi Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@500;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="topbar__brand">
+      <span class="topbar__mark">21</span>
+      <div>
+        <h1>Shipment Manifest</h1>
+        <p>Daftar resi &amp; status pengiriman</p>
+      </div>
+    </div>
+    <button class="btn btn--primary" id="openCreateBtn">+ Buat Resi</button>
+  </header>
+
+  <main class="container">
+
+    <section class="summary" id="summaryCards">
+      <div class="card">
+        <span class="card__label">Total Resi</span>
+        <span class="card__value" id="statTotal">0</span>
+      </div>
+      <div class="card">
+        <span class="card__label">CREATED</span>
+        <span class="card__value" id="statCreated">0</span>
+      </div>
+      <div class="card">
+        <span class="card__label">DELIVERED</span>
+        <span class="card__value" id="statDelivered">0</span>
+      </div>
+      <div class="card">
+        <span class="card__label">Total Tariff</span>
+        <span class="card__value" id="statTariff">Rp 0</span>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel__header">
+        <h2>Daftar Resi</h2>
+        <button class="btn btn--ghost" id="refreshBtn">Muat ulang</button>
+      </div>
+
+      <div id="alertBox" class="alert" hidden></div>
+
+      <div class="table-wrap">
+        <table class="manifest">
+          <thead>
+            <tr>
+              <th>ID Resi</th>
+              <th>Nama Barang</th>
+              <th>Piece</th>
+              <th>Berat (kg)</th>
+              <th>Servis</th>
+              <th>Total Tariff</th>
+              <th>Status</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="shipmentBody">
+            <tr><td colspan="8" class="empty">Memuat data...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal-overlay" id="createModal" hidden>
+    <div class="modal">
+      <div class="modal__header">
+        <h3>Buat Resi Baru</h3>
+        <button class="modal__close" id="closeCreateBtn">&times;</button>
+      </div>
+      <form id="createForm">
+        <label>
+          Nama Barang
+          <input type="text" name="item_name" required placeholder="Contoh: Laptop ASUS" />
+        </label>
+        <div class="form-row">
+          <label>
+            Jumlah (piece)
+            <input type="number" name="piece" min="1" required value="1" />
+          </label>
+          <label>
+            Berat total (kg)
+            <input type="number" name="weight" min="0.1" step="0.1" required value="1" />
+          </label>
+        </div>
+        <label>
+          Jenis Servis
+          <select name="service_code" required>
+            <option value="ECO">ECO — Economy (Rp 10.000/kg, 3 hari)</option>
+            <option value="ONS">ONS — One Night Service (Rp 12.000/kg, 2 hari)</option>
+            <option value="SDS">SDS — Same Day Service (Rp 20.000/kg, hari yang sama)</option>
+          </select>
+        </label>
+        <button type="submit" class="btn btn--primary btn--block">Buat Resi</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
